@@ -1,9 +1,9 @@
+/* eslint-disable */
 import React from 'react';
-import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ handleUpdateUser, isOpen, onClose }) {
+function EditProfilePopup(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
   const [userName, setUserName] = React.useState('');
@@ -20,7 +20,7 @@ function EditProfilePopup({ handleUpdateUser, isOpen, onClose }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    handleUpdateUser({
+    props.handleUpdateUser({
       name: userName,
       about: userAbout
     });
@@ -37,8 +37,8 @@ function EditProfilePopup({ handleUpdateUser, isOpen, onClose }) {
     <PopupWithForm
       formName="edit-profile"
       title="Edit Profile"
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__info">
@@ -76,17 +76,5 @@ function EditProfilePopup({ handleUpdateUser, isOpen, onClose }) {
     </PopupWithForm>
   );
 }
-
-EditProfilePopup.propTypes = {
-  handleUpdateUser: PropTypes.func,
-  isOpen: PropTypes.func,
-  onClose: PropTypes.func
-};
-
-EditProfilePopup.defaultProps = {
-  handleUpdateUser: () => {},
-  isOpen: () => {},
-  onClose: () => {}
-};
 
 export default EditProfilePopup;

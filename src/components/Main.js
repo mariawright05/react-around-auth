@@ -1,22 +1,27 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable */
 import React from 'react';
-import PropTypes from 'prop-types';
 import Card from './Card';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import Header from './Header';
+import Footer from './Footer';
 
-function Main({
+function Main ({
+  loggedIn,
+  userData,
   handleEditAvatarClick,
   handleEditProfileClick,
   handleAddPlaceClick,
   handleCardClick,
   cards,
   handleCardLike,
-  handleCardDelete
-}) {
+  handleCardDelete,
+  onSignOut }) {
   const currentUser = React.useContext(CurrentUserContext);
+  console.log(cards);
 
   return (
     <main>
+      <Header text={userData} loggedIn={ loggedIn } onSignOut={ onSignOut } />
       <section className="profile">
         <div className="profile__user-container">
           <div className="profile__avatar-container">
@@ -28,7 +33,6 @@ function Main({
             <button
               className="profile__user-avatar_overlay"
               onClick={handleEditAvatarClick}
-              type="button"
             />
           </div>
           <div className="profile__user-info">
@@ -37,22 +41,17 @@ function Main({
             <button
               className="profile__edit-button"
               onClick={handleEditProfileClick}
-              type="button"
             />
           </div>
         </div>
-        <button
-          className="profile__add-button"
-          onClick={handleAddPlaceClick}
-          type="button"
-        />
+        <button className="profile__add-button" onClick={handleAddPlaceClick} />
       </section>
 
       <section>
         <ul className="photo-grid">
-          {cards.map((card) => (
+          {cards.map((card, index) => (
             <Card
-              key={card.id} // was {index}
+              key={index}
               card={card}
               name={card.name}
               link={card.link}
@@ -66,28 +65,9 @@ function Main({
           ))}
         </ul>
       </section>
+      <Footer />
     </main>
   );
 }
-
-Main.propTypes = {
-  handleEditAvatarClick: PropTypes.func,
-  handleEditProfileClick: PropTypes.func,
-  handleAddPlaceClick: PropTypes.func,
-  handleCardClick: PropTypes.func,
-  cards: PropTypes.arrayOf(PropTypes.object),
-  handleCardLike: PropTypes.func,
-  handleCardDelete: PropTypes.func
-};
-
-Main.defaultProps = {
-  handleEditAvatarClick: () => {},
-  handleEditProfileClick: () => {},
-  handleAddPlaceClick: () => {},
-  handleCardClick: () => {},
-  cards: [],
-  handleCardLike: () => {},
-  handleCardDelete: () => {}
-};
 
 export default Main;

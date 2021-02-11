@@ -1,11 +1,10 @@
+/* eslint-disable */
 import React from 'react';
-import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup(props) {
   const [cardName, setCardName] = React.useState('');
   const [cardLink, setCardLink] = React.useState('');
-  const { handleAddPlaceSubmit, isOpen, onClose } = props;
 
   const handleCardNameChange = (e) => {
     setCardName(e.target.value);
@@ -18,7 +17,7 @@ function AddPlacePopup(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    handleAddPlaceSubmit({
+    props.handleAddPlaceSubmit({
       name: cardName,
       link: cardLink
     });
@@ -28,8 +27,8 @@ function AddPlacePopup(props) {
     <PopupWithForm
       name="add-card"
       title="New Place"
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__info">
@@ -63,17 +62,5 @@ function AddPlacePopup(props) {
     </PopupWithForm>
   );
 }
-
-AddPlacePopup.propTypes = {
-  handleAddPlaceSubmit: PropTypes.func,
-  isOpen: PropTypes.func,
-  onClose: PropTypes.func
-};
-
-AddPlacePopup.defaultProps = {
-  handleAddPlaceSubmit: () => {},
-  isOpen: () => {},
-  onClose: () => {}
-};
 
 export default AddPlacePopup;

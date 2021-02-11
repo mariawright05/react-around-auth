@@ -1,22 +1,22 @@
+/* eslint-disable */
 import React from 'react';
-import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpen, onClose, handleUpdateAvatar }) {
+function EditAvatarPopup(props) {
   const avatarInput = React.useRef('');
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    handleUpdateAvatar(avatarInput.current.value);
+    props.handleUpdateAvatar(avatarInput.current.value);
   }
 
   return (
     <PopupWithForm
       name="edit-avatar"
       title="Change profile picture"
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__info">
@@ -36,17 +36,5 @@ function EditAvatarPopup({ isOpen, onClose, handleUpdateAvatar }) {
     </PopupWithForm>
   );
 }
-
-EditAvatarPopup.propTypes = {
-  handleUpdateAvatar: PropTypes.func,
-  isOpen: PropTypes.func,
-  onClose: PropTypes.func
-};
-
-EditAvatarPopup.defaultProps = {
-  handleUpdateAvatar: () => {},
-  isOpen: () => {},
-  onClose: () => {}
-};
 
 export default EditAvatarPopup;

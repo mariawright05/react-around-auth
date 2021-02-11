@@ -1,36 +1,31 @@
+/* eslint-disable */
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import CurrentUserContext from '../contexts/CurrentUserContext';
+import { NavLink, Link } from 'react-router-dom';
 import logo from '../images/usa-logo-white.svg';
 
+
 function Header(props) {
-  const currentUser = CurrentUserContext;
-
-  const history = useHistory();
-
-  function signOut() {
-    localStorage.removeItem('jwt');
-    props.handleLogout();
-    history.push('/login');
-  }
-
-  return (
-    <header className="header">
-      <img className="logo" src={logo} alt="Around the US logo" />
+  const { text, link, loggedIn, onSignOut } = props;
+  if (loggedIn) {
+    return (
+    <div className="header">
+      <img className="logo" src={ logo } alt="Around the US logo" />
       <ul>
-        <li>{currentUser.email}</li>
-        <li>
-          <button onClick={signOut} type="button">
-            Log out
-          </button>
-        </li>
-      </ul>
-    </header>
-  );
+        <li>{`${text}`}</li>
+        <li className="header__link" onClick={onSignOut}>Log out</li>
+        </ul>
+    </div>
+    )
+  } else {
+    return (
+      <div className="header">
+        <img className="logo" src={ logo } alt="Around the US logo" />
+        <NavLink className="header__link" to={ `${link}` }>
+            {text}
+        </NavLink>
+      </div>
+    )
+  }
 }
-
-Header.propTypes = { handleLogout: PropTypes.func };
-Header.defaultProps = { handleLogout: () => {} };
 
 export default Header;
