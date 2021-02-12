@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as auth from '../utils/auth';
 
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin, tokenCheck }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -110,8 +110,9 @@ function App() {
 
   // AUTH
   // see if user is logged in
-  function handleLogin() {
-    setLoggedIn(true)
+  function handleLogin(e) {
+    e.preventDefault();
+    setLoggedIn(true);
   }
 
   useEffect(() => {
@@ -136,9 +137,9 @@ function App() {
 
   // GETTING INITIAL DATA FROM SERVER
   // initial cards
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = useState([]);
   // add if (loggedIn), then [loggedIn]
-  React.useEffect(() => {
+  useEffect(() => {
     api.getCardList()
     .then((res) => {
       setCards(res.map((card) => ({
@@ -155,36 +156,11 @@ function App() {
   // initial user data
   const [currentUser, setCurrentUser] = React.useState({});
   
-  React.useEffect(() => {
+  useEffect(() => {
     api.getUserInfo()
     .then((res) => setCurrentUser(res))
     .catch(err => console.log(err))
   }, []);
-
-
-  // useEffect for token
-  const tokenCheck = () => {
-    // if the user has a token in localStorage,
-    // this function will check that the user has a valid token
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      // we'll verify the token
-      getContent(jwt).then((res) => {
-        if (res) {
-          // we can get the user data here!
-          const userData = {
-            email: res.email
-          }
-          // let's put it in the state inside App.js
-          isLoggedIn(true)
-          history.push('/main');
-        }
-      });
-    }
-  } 
-  
-
-
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
@@ -196,19 +172,26 @@ function App() {
             </Route>
             <Route
               path="/main"
-              component={Main}
-              loggedIn={loggedIn}
-              userData={userData.email}
-              handleEditAvatarClick={handleEditAvatarClick}
-              handleEditProfileClick={handleEditProfileClick}
-              handleAddPlaceClick={handleAddPlaceClick}
-              handleCardClick={handleCardClick}
-              cards={cards}
-              handleCardLike={handleCardLike}
-              handleCardDelete={handleCardDelete}
-              onSignOut={onSignOut} />
+              render={() =>
+                <Main
+                  loggedIn={ loggedIn }
+                  userData={ userData.email }
+                  handleEditAvatarClick={ handleEditAvatarClick }
+                  handleEditProfileClick={ handleEditProfileClick }
+                  handleAddPlaceClick={ handleAddPlaceClick }
+                  handleCardClick={ handleCardClick }
+                  cards={ cards }
+                  handleCardLike={ handleCardLike }
+                  handleCardDelete={ handleCardDelete }
+                  onSignOut={ onSignOut }
+                />
+              }
+            />
             <Route path="/signup" component={Register} />
-            <Route path="/signin" component={Login} handleLogin={handleLogin} tokenCheck={tokenCheck} />
+            <Route path="/signin"
+              render={ () => 
+                <Login handleLogin={ handleLogin } tokenCheck={ tokenCheck } />
+              }  />
           </Switch>
         
           <EditProfilePopup isOpen={isEditProfilePopopOpen} onClose={closeAllPopups} handleUpdateUser={handleUpdateUser} />

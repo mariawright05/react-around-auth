@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const resetForm = () => {
     setEmail('');
