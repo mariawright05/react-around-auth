@@ -31,7 +31,7 @@ const Login = ({ handleLogin }) => {
         if (!data) {
           throw new Error('User does not exist'); 
         }
-        if (data.jwt) {
+        if (data.token) {
           console.log('there is a token!!'); // This doesn't happen
           handleLogin(); // ...so I assume this isn't getting called either
         }
