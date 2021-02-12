@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as auth from '../utils/auth';
 
 
-const Login = ({ handleLogin, tokenCheck }) => {
+const Login = ({ handleLogin }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,23 +26,24 @@ const Login = ({ handleLogin, tokenCheck }) => {
       return;
     }
 
-    auth.authorize(email, password)
+    auth.authorize(email, password) // A token is returned with no errors
       .then((data) => {
         if (!data) {
-          throw new Error('User does not exist');
+          throw new Error('User does not exist'); 
         }
         if (data.jwt) {
-          handleLogin();
+          console.log('there is a token!!'); // This doesn't happen
+          handleLogin(); // ...so I assume this isn't getting called either
         }
       })
       .then(resetForm)
-      .then(() => history.pushState('/main'))
+      .then(() => history.push('/main'))
       .catch(err => setMessage(err.message));
   }
 
   useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      history.push('/main')
+      history.push('/main') // This is where I push to /main (instead of in handleLogin())
     }
   }, [])
 

@@ -22,12 +22,12 @@ const Register = () => {
     auth.register(email, password)
       .then((res) => {
         if (!res || res.statusCode === 400) {
-          throw new Error('Something went wrong');
+          throw new Error('Something went wrong'); // there is no error
         }
-        return res;
+        return res; // data and _id are returned correctly
       })
-      .then(resetForm())
-      .then(() => history.push('/signin'))
+      .then(resetForm()) // this happens
+      .then(() => history.push('/main')) // this is not happening
       .catch(err => setMessage(err.message));      
   }
 

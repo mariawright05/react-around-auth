@@ -190,7 +190,7 @@ function App() {
             <Route path="/signup" component={Register} />
             <Route path="/signin"
               render={ () => 
-                <Login handleLogin={ handleLogin } tokenCheck={ tokenCheck } />
+                <Login handleLogin={ handleLogin } />
               }  />
           </Switch>
         
