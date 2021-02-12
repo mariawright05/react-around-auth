@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Header from './Header';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import * as auth from '../utils/auth';
 
 
@@ -25,25 +25,24 @@ const Login = ({ handleLogin }) => {
     if (!email || !password) {
       return;
     }
-
-    auth.authorize(email, password) // A token is returned with no errors
+    auth.authorize(email, password) 
       .then((data) => {
-        if (!data) {
+        if (!data.token) {
           throw new Error('User does not exist'); 
         }
         if (data.token) {
-          console.log('there is a token!!'); // This doesn't happen
-          handleLogin(); // ...so I assume this isn't getting called either
+          handleLogin(); 
         }
       })
-      .then(resetForm)
+      .then(resetForm())
       .then(() => history.push('/main'))
-      .catch(err => setMessage(err.message));
+      .catch(err => console.log(err))
+      // .catch(err => setMessage(err.message));
   }
 
   useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      history.push('/main') // This is where I push to /main (instead of in handleLogin())
+      history.push('/main') 
     }
   }, [])
 
@@ -87,7 +86,7 @@ const Login = ({ handleLogin }) => {
   );
 };
 
-Login.propTypes = { onSubmit: PropTypes.func };
-Login.defaultProps = { onSubmit: () => {} };
+// Login.propTypes = { onSubmit: PropTypes.func };
+// Login.defaultProps = { onSubmit: () => {} };
 
 export default Login;

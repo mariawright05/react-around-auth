@@ -32,12 +32,15 @@ export const authorize = (email, password) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({
+      password: password,
+      email: email
+    })
   })
     .then((res) => res.json())
     .then((data) => {
-      if (data.jwt) {
-        localStorage.setItem('jwt', data.jwt);
+      if (data.token) {
+        localStorage.setItem('token', data.token);
         return data;
       } else {
         return;

@@ -110,8 +110,7 @@ function App() {
 
   // AUTH
   // see if user is logged in
-  function handleLogin(e) {
-    e.preventDefault();
+  const handleLogin = () => {
     setLoggedIn(true);
   }
 
@@ -170,28 +169,23 @@ function App() {
             <Route exact path='/'>
               { loggedIn ? <Redirect to='/main' /> : <Redirect to='/signin' /> }
             </Route>
-            <Route
+            <ProtectedRoute
               path="/main"
-              render={() =>
-                <Main
-                  loggedIn={ loggedIn }
-                  userData={ userData.email }
-                  handleEditAvatarClick={ handleEditAvatarClick }
-                  handleEditProfileClick={ handleEditProfileClick }
-                  handleAddPlaceClick={ handleAddPlaceClick }
-                  handleCardClick={ handleCardClick }
-                  cards={ cards }
-                  handleCardLike={ handleCardLike }
-                  handleCardDelete={ handleCardDelete }
-                  onSignOut={ onSignOut }
-                />
-              }
+              loggedIn={ loggedIn }
+              userData={ userData.email }
+              handleEditAvatarClick={ handleEditAvatarClick }
+              handleEditProfileClick={ handleEditProfileClick }
+              handleAddPlaceClick={ handleAddPlaceClick }
+              handleCardClick={ handleCardClick }
+              cards={ cards }
+              handleCardLike={ handleCardLike }
+              handleCardDelete={ handleCardDelete }
+              onSignOut={ onSignOut }
             />
             <Route path="/signup" component={Register} />
-            <Route path="/signin"
-              render={ () => 
-                <Login handleLogin={ handleLogin } />
-              }  />
+            <Route path="/signin">
+              <Login handleLogin={handleLogin} />
+            </Route>
           </Switch>
         
           <EditProfilePopup isOpen={isEditProfilePopopOpen} onClose={closeAllPopups} handleUpdateUser={handleUpdateUser} />
