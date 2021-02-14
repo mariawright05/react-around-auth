@@ -32,10 +32,12 @@ const Register = () => {
   }
 
   useEffect(() => {
+    console.log('useEffect working');
     if (localStorage.getItem('jwt')) {
-      history.push('/main')
+      console.log('useEffect working');
+      history.push('/main');
     }
-  }, [])
+  }, [history])
 
   return (
     <div>

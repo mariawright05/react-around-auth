@@ -10,9 +10,9 @@ function Header(props) {
     return (
     <div className="header">
       <img className="logo" src={ logo } alt="Around the US logo" />
-      <ul>
-        <li>{`${text}`}</li>
-        <li className="header__link" onClick={onSignOut}>Log out</li>
+        <ul className="header__nav">
+          <li className="header__link">{`${text}`}</li>
+          <li className="header__link" onClick={onSignOut}>Log out</li>
         </ul>
     </div>
     )
@@ -20,9 +20,11 @@ function Header(props) {
     return (
       <div className="header">
         <img className="logo" src={ logo } alt="Around the US logo" />
-        <NavLink className="header__link" to={ `${link}` }>
+        <div className="header__nav">
+          <NavLink className="header__link" to={ `${link}` }>
             {text}
-        </NavLink>
+          </NavLink>
+        </div>
       </div>
     )
   }

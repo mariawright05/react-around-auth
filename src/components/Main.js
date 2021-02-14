@@ -7,7 +7,7 @@ import Footer from './Footer';
 
 function Main ({
   loggedIn,
-  userData,
+  userEmail,
   handleEditAvatarClick,
   handleEditProfileClick,
   handleAddPlaceClick,
@@ -20,7 +20,7 @@ function Main ({
 
   return (
     <main>
-      <Header text={userData} loggedIn={ loggedIn } onSignOut={ onSignOut } />
+      <Header text={ userEmail } loggedIn={loggedIn} onSignOut={ onSignOut } />
       <section className="profile">
         <div className="profile__user-container">
           <div className="profile__avatar-container">

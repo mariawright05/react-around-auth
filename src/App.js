@@ -31,7 +31,8 @@ function App() {
 
   // set states for login
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
   const history = useHistory();
 
   // handler functions for popups  
@@ -118,12 +119,14 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     if (jwt){
        getContent(jwt)
-        .then((res) => {
-          userData = { email: res.email };
-          setLoggedIn(true);
-          setUserData(userData);
-          history.push('/main');
-        });
+         .then((res) => {
+           setUserEmail(res.data.email);
+            setIsSuccessful(true);
+            setLoggedIn(true);
+        })
+        .catch(err => console.log(err))
+    } else {
+      setLoggedIn(false);
     }
   }, [loggedIn]);
 
@@ -170,9 +173,10 @@ function App() {
               { loggedIn ? <Redirect to='/main' /> : <Redirect to='/signin' /> }
             </Route>
             <ProtectedRoute
-              path="/main"
+              exact path="/main"
+              component={Main}
               loggedIn={ loggedIn }
-              userData={ userData.email }
+              userEmail={ userEmail }
               handleEditAvatarClick={ handleEditAvatarClick }
               handleEditProfileClick={ handleEditProfileClick }
               handleAddPlaceClick={ handleAddPlaceClick }
