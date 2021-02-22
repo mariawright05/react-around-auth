@@ -13,6 +13,7 @@
 @import url('./__error/_visible/popup__error_visible.css');
 @import url('./__form/popup__form.css');
 @import url('./__label/popup__label.css');
+@import url('./__icon/popup__icon.css');
 
 .popup {
   position: fixed;
