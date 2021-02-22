@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 // Determines if request is successful and changes button text
 function loading(isLoading, popup) {
   if (isLoading) {

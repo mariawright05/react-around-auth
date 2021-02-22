@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 
 function ImagePopup({ isOpen, onClose, link, name }) {

@@ -1,12 +1,9 @@
-/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, Redirect, withRouter, useHistory } from 'react-router-dom';
-import Header from './components/Header.js';
 import ProtectedRoute from './components/ProtectedRoute';
 import Main from './components/Main.js';
 import Register from './components/Register';
 import Login from './components/Login';
-import Footer from './components/Footer.js';
 import PopupWithForm from './components/PopupWithForm.js';
 import ImagePopup from './components/ImagePopup.js';
 import CurrentUserContext from './contexts/CurrentUserContext';
@@ -15,6 +12,7 @@ import EditAvatarPopup from './components/EditAvatarPopup';
 import api from './utils/api.js';
 import AddPlacePopup from './components/AddPlacePopup.js';
 import { authorize, register, getContent } from './utils/auth.js';
+import InfoTooltip from './components/InfoTooltip.js';
 
 function App() {
 
@@ -24,6 +22,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
 
   // set states for image popups
   const [selectedLink, setSelectedLink] = useState('');
@@ -59,6 +58,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(false);
+    setIsInfoTooltipOpen(false);
   };
 
   // api functions for popup data
@@ -111,24 +111,60 @@ function App() {
 
   // AUTH
   // see if user is logged in
-  const handleLogin = () => {
-    setLoggedIn(true);
-  }
 
-  useEffect(() => {
+  const handleTokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
     if (jwt){
        getContent(jwt)
          .then((res) => {
-           setUserEmail(res.data.email);
+            setUserEmail(res.data.email);
             setIsSuccessful(true);
             setLoggedIn(true);
+            history.push('/main');
         })
         .catch(err => console.log(err))
     } else {
       setLoggedIn(false);
     }
-  }, [loggedIn]);
+  };
+
+  // register user
+  const handleRegister = (email, password) => {
+    register(email, password)
+      .then((res) => {
+        if (res.err || !res) {
+          setIsSuccessful(false);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setIsSuccessful(true);
+          setIsInfoTooltipOpen(true);
+          history.push('/signin');
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+  // login user
+  const handleLogin = (email, password) => {
+    authorize(email, password)
+      .then((res) => {
+        if (!res) {
+          console.log(res.error);
+          setIsSuccessful(false);
+          setIsInfoTooltipOpen(true);
+        } if (res.err) {
+          console.log(res.error);
+          setIsSuccessful(false);
+          setIsInfoTooltipOpen(true);
+        }
+        handleTokenCheck();
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsSuccessful(false);
+        setIsInfoTooltipOpen(true);
+      })
+  }
 
   // Log user out
   const onSignOut = () => {
@@ -164,6 +200,13 @@ function App() {
     .catch(err => console.log(err))
   }, []);
 
+  useEffect(() => {
+    handleTokenCheck();
+    if (loggedIn) {
+      history.push('/main');
+    }
+  }, []);
+
   return (
     <CurrentUserContext.Provider value={ currentUser }>
       <div className="page">
@@ -186,9 +229,13 @@ function App() {
               handleCardDelete={ handleCardDelete }
               onSignOut={ onSignOut }
             />
-            <Route path="/signup" component={Register} />
+            <Route path="/signup">
+              <Register handleRegister={ handleRegister } />
+              <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} isSuccessful={isSuccessful} />
+            </Route>
             <Route path="/signin">
-              <Login handleLogin={handleLogin} />
+              <Login handleLogin={ handleLogin } />
+              <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} isSuccessful={isSuccessful} />
             </Route>
           </Switch>
         

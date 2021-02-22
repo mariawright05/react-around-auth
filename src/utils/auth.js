@@ -1,4 +1,3 @@
-/* eslint-disable */
 export const BASE_URL = 'https://register.nomoreparties.co';
 
 export const register = (email, password) => {

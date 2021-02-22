@@ -1,50 +1,25 @@
-/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Header from './Header';
-// import PropTypes from 'prop-types';
-import * as auth from '../utils/auth';
 
 
 const Login = ({ handleLogin }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-
-  const resetForm = () => {
-    setEmail('');
-    setPassword('');
-    setMessage('');
-  }
 
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      return;
-    }
-    auth.authorize(email, password) 
-      .then((data) => {
-        if (!data.token) {
-          throw new Error('User does not exist'); 
-        }
-        if (data.token) {
-          handleLogin(); 
-        }
-      })
-      .then(resetForm())
-      .then(() => history.push('/main'))
-      .catch(err => console.log(err))
-      // .catch(err => setMessage(err.message));
+    handleLogin(email, password);
   }
 
   useEffect(() => {
     if (localStorage.getItem('jwt')) {
       history.push('/main') 
     }
-  }, [])
+  }, [history])
 
   return (
     <div>
@@ -85,8 +60,5 @@ const Login = ({ handleLogin }) => {
     </div>
   );
 };
-
-// Login.propTypes = { onSubmit: PropTypes.func };
-// Login.defaultProps = { onSubmit: () => {} };
 
 export default Login;
