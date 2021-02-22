@@ -88,7 +88,7 @@ function App() {
   function handleCardLike(card) {
     // Check one more time if this card was already liked
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    let res = !isLiked ? api.cardLikeAdd(card._id) : api.cardLikeRemove(card._id);
+    const res = !isLiked ? api.cardLikeAdd(card._id) : api.cardLikeRemove(card._id);
 
     res.then((newCard) => {
       // Create a new array based on the existing one and putting a new card into it
